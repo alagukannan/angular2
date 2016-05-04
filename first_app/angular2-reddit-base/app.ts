@@ -1,8 +1,37 @@
 import { bootstrap } from "angular2/platform/browser";
 import { Component } from "angular2/core";
 
+class Article{
+    title: String;
+    link : String;
+    votes: number;
+   
+   constructor(title: string, link: string, votes?:number)
+   {
+       this.title = title;
+       this.link = link;
+       this.votes = votes || 0;
+   }
+   
+   voteUp():void{
+       this.votes++;
+   }
+   voteDown():void{
+       this.votes--;
+   }
+   domain(): string{
+       try{
+           let link:string = this.link.split('//')[1];
+           return link.split('/')[0];
+       }catch(e){
+           return null;
+       }
+   }
+}
+
 @Component({
   selector: 'reddit-article',
+  inputs : ['article'],
   host: {
     class: 'row'
   },
@@ -10,7 +39,7 @@ import { Component } from "angular2/core";
     <div class="four wide column center aligned votes">
       <div class="ui statistic">
         <div class="value">
-          {{ votes }}
+          {{ article.votes }}
         </div>
         <div class="label">
           Points
@@ -18,9 +47,10 @@ import { Component } from "angular2/core";
       </div>
     </div>
     <div class="twelve wide column">
-      <a class="ui large header" href="{{ link }}">
-        {{ title }}
+      <a class="ui large header" href="{{ article.link }}">
+        {{ article.title }}
       </a>
+      <div class="meta">{{ article.domain() }}</div>
       <ul class="ui big horizontal list voters">
         <li class="item">
           <a href (click)="voteUp()">
@@ -39,28 +69,26 @@ import { Component } from "angular2/core";
   `
 })
 class ArticleComponent {
-  votes: number;
-  title: string;
-  link: string;
+    article: Article
 
   constructor() {
-    this.title = 'Angular 2';
-    this.link = 'http://angular.io';
-    this.votes = 10;
+      this.article = new Article('Angularjs','https://www.google.com',0);
   }
 
   voteUp() {
-    this.votes += 1;
+    this.article.voteUp();
+    return false;
   }
 
   voteDown() {
-    this.votes -= 1;
+    this.article.voteDown();
+    return false;
   }
 }
 
 @Component({
  selector: 'reddit',
- directives : [ArticleComponent]
+ directives : [ArticleComponent],
 template: `
     <form class="ui large form segment">
       <h3 class="ui header">Add a Link</h3>
@@ -81,18 +109,30 @@ template: `
     </form>
     
     <div class="ui grid posts">
-      <reddit-article>
+      <reddit-article
+        *ngFor="#article of sortedArticles()"
+        [article]="article">
       </reddit-article>
     </div>
  `
 })
 class RedditApp {
     names: String[];
+    articles : Article[];
     constructor()
     {
+        this.articles = [new Article('Angularjs','https://www.google.com',0),
+                new Article('esri','https://www.esri.com',0) ,
+                new Article('msn','https://www.msn.com',0) ];
     }
     addArticle(title: HTMLInputElement, link: HTMLInputElement): void{
         console.log(`Adding Article : ${title.value} and link : ${link.value}`);
+        this.articles.push(new Article(title.value,link.value,0));
+        title.value = link.value = '';
+    }
+    
+    sortedArticles(): Article[]{
+        return this.articles.sort((a:Article,b: Article) => b.votes - a.votes);
     }
 }
 
