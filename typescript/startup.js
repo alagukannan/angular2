@@ -1,11 +1,11 @@
-var startup = (function () {
-    function startup() {
+var Startup = (function () {
+    function Startup() {
     }
-    startup.main = function () {
-        console.log("Hello World");
+    Startup.main = function () {
+        console.log('test');
         return 0;
     };
-    return startup;
+    return Startup;
 }());
-startup.main();
-//# sourceMappingURL=startup.js.map
+Startup.main();
+//# sourceMappingURL=Startup.js.map
