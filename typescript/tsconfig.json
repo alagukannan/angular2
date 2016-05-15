@@ -1,5 +1,19 @@
 {
     "compilerOptions": {
+<<<<<<< HEAD
         "sourceMap":  true
     }
+=======
+        "module": "commonjs",
+        "noImplicitAny": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "sourceMap": true
+    },
+    "compileOnSave": true,
+    "exclude": [
+        "node_modules",
+        "wwwroot"
+    ]
+>>>>>>> origin/master
 }

@@ -20,7 +20,10 @@ function pad(s, len, pad) {
 var TabbedReport = (function (_super) {
     __extends(TabbedReport, _super);
     function TabbedReport(headers, values) {
+<<<<<<< HEAD
         // determine max length for each column
+=======
+>>>>>>> origin/master
         var lengths = headers.map(function (header, i) {
             var maxLength = header.length;
             values.forEach(function (data) {
@@ -30,6 +33,7 @@ var TabbedReport = (function (_super) {
             });
             return maxLength;
         });
+<<<<<<< HEAD
         // report data
         var data = [];
         // headers
@@ -37,6 +41,11 @@ var TabbedReport = (function (_super) {
         // separators
         data.push(headers.map(function (h, i) { return pad('', lengths[i], '-'); }).join(" "));
         // data
+=======
+        var data = [];
+        data.push(headers.map(function (h, i) { return pad(h, lengths[i], ' '); }).join(" "));
+        data.push(headers.map(function (h, i) { return pad('', lengths[i], '-'); }).join(" "));
+>>>>>>> origin/master
         values.map(function (row) {
             data.push(row.map(function (col, i) { return pad(col, lengths[i], ' '); }).join(" "));
         });
